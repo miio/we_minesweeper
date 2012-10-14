@@ -14,7 +14,7 @@ class Panel < ActiveRecord::Base
       # Open this panel
       self.is_open = true
       # bomb?
-      raise "GameOver" if self.is_bomb?
+      self.game_over if self.is_bomb?
       # open space panel
       self.open
       self.save_with_clear_cache
@@ -77,6 +77,15 @@ class Panel < ActiveRecord::Base
       end
     end
     return target_panel
+  end
+
+  def game_over
+    Panel.transaction do
+      # Lock Record
+      lock = Panel.where(room_id: self.room.id).all(lock: true)
+      # Update All
+      Panel.update_all("is_open = true", room_id: self.room.id)
+    end
   end
 
   def after_save_clear_cache
