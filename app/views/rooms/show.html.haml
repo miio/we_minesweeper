@@ -8,11 +8,12 @@
           = f.submit ' '
       - else
         %form
-          - if panel.bomb_flag != 0
+          - if panel.bomb_flag > 0
             %input{type: "button", value: "#{panel.bomb_flag}"}
-          - if panel.is_bomb
-            %input{type: "button", value: "B"}
-          - unless panel.is_bomb
-            - if panel.bomb_flag == 0
-              %input{type: "button", value: "X"}
+          - else
+            - if panel.is_bomb?
+              %input{type: "button", value: "B"}
+            - unless panel.is_bomb
+              - if panel.bomb_flag == 0
+                %input{type: "button", value: "X"}
 
