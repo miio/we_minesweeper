@@ -61,7 +61,7 @@ class Panel < ActiveRecord::Base
       ((panel.width-1)..(panel.width+1)).each do |w|
         unless self.width == w and self.height == h
           unless structure[w][h].nil?
-            if structure[w][h].bomb_flag == 0 and !structure[w][h].is_open
+            if structure[w][h].bomb_flag == 0 and !structure[w][h].is_open and !structure[w][h].is_bomb
               structure[w][h].is_open = true
               structure[w][h].save
               target_panel << structure[w][h]
