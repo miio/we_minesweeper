@@ -1,4 +1,5 @@
-- @rooms.each do |r|
-  %p= link_to "#{r.id} start game #{r.created_at}", r
 = form_for @room do |f|
   = f.submit 'Create'
+- @rooms.each do |r|
+  %p= link_to "#{r.id} start game #{r.created_at}", r
+= paginate @rooms

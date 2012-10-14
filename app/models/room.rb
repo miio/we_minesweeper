@@ -1,4 +1,5 @@
 class Room < ActiveRecord::Base
+  paginates_per 25
   attr_accessible :level
   has_many :panels
   after_create :after_create_callback
