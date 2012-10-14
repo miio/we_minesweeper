@@ -1,4 +1,8 @@
 WeMinesweeper::Application.routes.draw do
+  resources :tops
+  resources :rooms do
+    resources :panels
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

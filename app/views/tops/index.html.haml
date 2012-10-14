@@ -1,0 +1,4 @@
+= @rooms.each do |r|
+  = link_to r.id, r
+= form_for @room do |f|
+  = f.submit 'Create'

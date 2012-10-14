@@ -1,0 +1,18 @@
+- @panels.each_pair do |x, panel_x|
+  %div{style: "float:left"}
+    - panel_x.each_pair do |y, panel|
+      - unless panel.is_open?
+        = form_for [@room, panel] do |f|
+          = f.hidden_field :x, value: panel.width
+          = f.hidden_field :y, value: panel.height
+          = f.submit ' '
+      - else
+        %form
+          - if panel.bomb_flag != 0
+            %input{type: "button", value: "#{panel.bomb_flag}"}
+          - if panel.is_bomb
+            %input{type: "button", value: "B"}
+          - unless panel.is_bomb
+            - if panel.bomb_flag == 0
+              %input{type: "button", value: "X"}
+
