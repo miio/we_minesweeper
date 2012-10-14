@@ -1,4 +1,5 @@
 class Panel < ActiveRecord::Base
+  self.primary_key = :id
   attr_accessible :is_open, :is_bomb, :width, :height, :room, :bomb_flag
   belongs_to :room
   BOMB = {

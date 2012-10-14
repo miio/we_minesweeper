@@ -11,9 +11,10 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014141414) do
+ActiveRecord::Schema.define(:version => 20121014145008) do
 
-  create_table "panels", :force => true do |t|
+  create_table "panels", :id => false, :force => true do |t|
+    t.integer  "id",                            :null => false
     t.integer  "room_id"
     t.integer  "width"
     t.integer  "height"
@@ -26,7 +27,8 @@ ActiveRecord::Schema.define(:version => 20121014141414) do
 
   add_index "panels", ["room_id"], :name => "index_panels_on_room_id"
 
-  create_table "rooms", :force => true do |t|
+  create_table "rooms", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.integer  "level"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

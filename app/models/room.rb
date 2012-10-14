@@ -1,4 +1,5 @@
 class Room < ActiveRecord::Base
+  self.primary_key = :id
   paginates_per 25
   attr_accessible :level
   has_many :panels
