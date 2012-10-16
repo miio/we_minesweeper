@@ -2,6 +2,7 @@ class Room < ActiveRecord::Base
   paginates_per 25
   attr_accessible :level
   has_many :panels
+  belongs_to :author, class_name: "User"
   after_create :after_create_callback
   @cached_structure
   LEVEL = { easy: 1, normal:2, hard:3 }
@@ -10,6 +11,10 @@ class Room < ActiveRecord::Base
     LEVEL[:normal] => [16,16],
     LEVEL[:hard]   => [30,16]
   }
+
+  def get_room_ranking
+    Panel.select("count(panels.id) as count, users.*").where(is_bomb: false, is_open: true, room_id: self).group("panels.user_id").limit(5).all(joins: :user)
+  end
 
   def after_create_callback
     panel = []

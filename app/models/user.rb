@@ -1,12 +1,16 @@
 class User < ActiveRecord::Base
+  has_many :rooms
+  has_many :panels
   has_many :authentications
   devise :trackable, :omniauthable
+  attr_accessible :name
 
   def set_for_twitter omniauth
     User.transaction do
       twitter_lock = Authentication.find_by_provider_and_uid(omniauth['provider'], omniauth['uid'], lock: true)
       if twitter_lock.nil?
         self.authentications.build self.get_twitter_args(omniauth)
+        self.name = omniauth['extra']['raw_info']['screen_name']
       else
         twitter_lock.update_attributes self.get_twitter_args(omniauth)
       end

@@ -1,24 +1,32 @@
 class Panel < ActiveRecord::Base
   attr_accessible :is_open, :is_bomb, :width, :height, :room, :bomb_flag
   belongs_to :room
+  belongs_to :user
   BOMB = {
     Room::LEVEL[:easy]   => 3,
     Room::LEVEL[:easy]   => 10,
     Room::LEVEL[:normal] => 40,
     Room::LEVEL[:hard]   => 99
   }
-  def click
+
+  def click user
     Panel.transaction do
       # LockRecord
       lock = Panel.find(self, lock: true)
-      # Open this panel
-      self.is_open = true
-      # bomb?
-      self.game_over if self.is_bomb?
-      # open space panel
-      self.open
-      self.save_with_clear_cache
-     # clear?
+      unless lock.nil?
+        unless lock.is_open?
+          # Open this panel
+          lock.is_open = true
+          lock.user = user
+          # open space panel
+          lock.open user
+          lock.save_with_clear_cache
+          # bomb?
+          lock.game_over if lock.is_bomb?
+          lock.save_with_clear_cache
+          # clear?
+        end
+      end
     end
   end
 
@@ -50,11 +58,11 @@ class Panel < ActiveRecord::Base
     return count
   end
 
-  def open
-    self.open_target_panels self
+  def open user
+    self.open_target_panels self, user
   end
 
-  def open_target_panels panel
+  def open_target_panels panel, user
     target_panel = []
     structure = self.room.get_structure
     ((panel.height-1)..(panel.height+1)).each do |h|
@@ -63,6 +71,7 @@ class Panel < ActiveRecord::Base
           unless structure[w][h].nil?
             if structure[w][h].bomb_flag == 0 and !structure[w][h].is_open and !structure[w][h].is_bomb
               structure[w][h].is_open = true
+              structure[w][h].user = user unless user.nil?
               structure[w][h].save
               target_panel << structure[w][h]
             end
@@ -73,7 +82,7 @@ class Panel < ActiveRecord::Base
 
     unless target_panel.size <= 0
       target_panel.each do |t|
-        self.open_target_panels t
+        self.open_target_panels t, user
       end
     end
     return target_panel

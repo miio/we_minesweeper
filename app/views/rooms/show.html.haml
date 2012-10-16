@@ -1,3 +1,15 @@
+%p
+  Room Owner is
+  = @room.author.name
+%div
+  %p
+    Opend Panel Ranking
+    %ul
+      - @room_ranking.each do |rank|
+        - if rank.name.nil?
+          %li= "#{rank.count} | Empty"
+        - else
+          %li= "#{rank.count} | #{rank.name}"
 - @panels.each_pair do |x, panel_x|
   %div{style: "float:left"}
     - panel_x.each_pair do |y, panel|

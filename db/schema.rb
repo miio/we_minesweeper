@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016142019) do
+ActiveRecord::Schema.define(:version => 20121016171324) do
 
   create_table "authentications", :force => true do |t|
     t.integer  "user_id"
@@ -31,8 +31,7 @@ ActiveRecord::Schema.define(:version => 20121016142019) do
   add_index "authentications", ["provider", "uid"], :name => "index_authentications_on_provider_and_uid", :unique => true
   add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
 
-  create_table "panels", :id => false, :force => true do |t|
-    t.integer  "id",                            :null => false
+  create_table "panels", :force => true do |t|
     t.integer  "room_id"
     t.integer  "width"
     t.integer  "height"
@@ -41,16 +40,20 @@ ActiveRecord::Schema.define(:version => 20121016142019) do
     t.boolean  "is_bomb",    :default => false
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+    t.integer  "user_id"
   end
 
   add_index "panels", ["room_id"], :name => "index_panels_on_room_id"
+  add_index "panels", ["user_id"], :name => "index_panels_on_user_id"
 
-  create_table "rooms", :id => false, :force => true do |t|
-    t.integer  "id",         :null => false
+  create_table "rooms", :force => true do |t|
     t.integer  "level"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "author_id"
   end
+
+  add_index "rooms", ["author_id"], :name => "index_rooms_on_author_id"
 
   create_table "users", :force => true do |t|
     t.integer  "sign_in_count",      :default => 0
@@ -60,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20121016142019) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
+    t.string   "name"
   end
 
 end
