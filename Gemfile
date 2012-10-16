@@ -24,6 +24,9 @@ end
 gem 'thin'
 gem 'jquery-rails'
 gem 'kaminari'
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-twitter'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

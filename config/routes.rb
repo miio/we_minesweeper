@@ -1,4 +1,9 @@
 WeMinesweeper::Application.routes.draw do
+  devise_for :users, controllers: { sessions: "users/sessions", authentications: "authentications" } do
+    get '/users/sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session
+    get '/sessions/new', to: 'index#index', as: :new_user_session
+    get '/users/auth/:provider/callback', to: 'authentications#callback'
+  end
   resources :tops
   resources :rooms do
     resources :panels

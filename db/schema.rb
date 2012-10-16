@@ -11,9 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121014141414) do
+ActiveRecord::Schema.define(:version => 20121016142019) do
 
-  create_table "panels", :force => true do |t|
+  create_table "authentications", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "screen_name"
+    t.string   "access_token"
+    t.string   "access_secret"
+    t.string   "bio"
+    t.string   "image_url"
+    t.string   "web_url"
+    t.string   "last_tid"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "authentications", ["provider", "uid"], :name => "index_authentications_on_provider_and_uid", :unique => true
+  add_index "authentications", ["user_id"], :name => "index_authentications_on_user_id"
+
+  create_table "panels", :id => false, :force => true do |t|
+    t.integer  "id",                            :null => false
     t.integer  "room_id"
     t.integer  "width"
     t.integer  "height"
@@ -26,10 +45,21 @@ ActiveRecord::Schema.define(:version => 20121014141414) do
 
   add_index "panels", ["room_id"], :name => "index_panels_on_room_id"
 
-  create_table "rooms", :force => true do |t|
+  create_table "rooms", :id => false, :force => true do |t|
+    t.integer  "id",         :null => false
     t.integer  "level"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "users", :force => true do |t|
+    t.integer  "sign_in_count",      :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
   end
 
 end
